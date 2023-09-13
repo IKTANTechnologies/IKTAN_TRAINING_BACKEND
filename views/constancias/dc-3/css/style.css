@@ -1,0 +1,327 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --tam-encabezado: 14px;
+    --tam-parrafos: 11px;
+    --tam-datos: 12px;
+}
+
+p {
+    font-size: var(--tam-parrafos);
+}
+
+h3 {
+    font-size: var(--tam-datos);
+}
+
+.container {
+    width: 100%;
+}
+
+.fila-logo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cont-logo {
+    width: 200px;
+    height: 110px;
+}
+
+.logo {
+    /* width: 150px;
+    height: 60px; */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.container-title {
+    text-align: center;
+    font-size: var(--tam-encabezado);
+    margin-bottom: 10px;
+}
+
+.container-title h4 {
+    text-align: center;
+    /* padding-top: 5px;
+    padding-bottom: 5px; */
+}
+
+/* AQUI EMPIEZA LA SECCION DEL TRABAJADOR */
+
+.container-trabajador, .container-empresa, .container-capacitacion {
+    line-height: 18px;
+}
+
+.seccion-titulo {
+    text-align: center;
+    background-color: black;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.nombre {
+    padding-left: 3px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+.rfc-ocupacion {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 1px solid;
+}
+
+.rfc p {
+    padding-left: 3px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+}
+
+.rfc {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.datos-rfc {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+}
+
+.datos-rfc div {
+    flex-grow: 1;
+    text-align: center;
+    border-right: 1px solid;
+}
+
+.ocupacion p {
+    padding-left: 3px;
+}
+
+.ocupacion h3 {
+    text-align: center;
+}
+
+.puesto p {
+    padding-left: 3px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+.puesto h3 {
+    padding-left: 3px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+/* SECCION EMPRESA */
+
+.container-empresa {
+    margin-top: 18px;
+}
+
+.razon-social, .shcp {
+    padding-left: 3px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.razon-social h3 {
+    line-height: 18px;
+}
+
+.datos-shcp {
+    display: grid;
+    grid-template-columns: repeat(15, 1fr) 58%;
+    border-left: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.datos-shcp div {
+    text-align: center;
+    border-right: 1px solid;
+}
+
+/* AQUI EMPIEZA LA SECCION DE CAPACITACION */
+
+.container-capacitacion {
+    margin-top: 18px;
+}
+
+.nombre-curso {
+    padding-left: 3px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+/* AQUI EMPIEZA LA SECCION 3 */
+
+.section3 {
+    display: grid;
+    grid-template-columns: 17.5% 17.5% 30% 5% 30%;
+}
+
+.horas {
+    /* text-align: center; */
+    padding-left: 3px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    /* line-height: 20px; */
+}
+
+.horas h3 {
+    text-align: center;
+}
+
+.periodo {
+    text-align: center;
+    padding-left: 3px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    font-size: 12px;
+    /* line-height: 20px; */
+}
+
+.fecha1 {
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.titulo-anio {
+    grid-column-start: 1;
+    grid-column-end: 5;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+}
+
+.titulo-mes {
+    grid-column-start: 5;
+    grid-column-end: 7;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+}
+
+.titulo-dia {
+    grid-column-start: 7;
+    grid-column-end: 9;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+}
+
+.dato-f1 {
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.separacion {
+    text-align: center;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    padding-top: 22px;
+}
+
+.tematica-curso {
+    padding-left: 3px;
+    border-left: 1px solid;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+}
+
+.capacitador {
+    padding-left: 3px;
+    border-left: 1px solid;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+}
+
+.firmas {
+    margin-top: 20px;
+    border: 1px solid;
+}
+
+.info {
+    text-align: center;
+    font-weight: 600;
+}
+
+.jefes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    font-size: 8px;
+}
+
+.firmas-imagen {
+    display: flex;
+    justify-content: space-around;
+}
+
+.section-datos-firma {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+}
+
+.dato-patron, .dato-instructor, .dato-representante {
+    place-self: center;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-bottom: 1px solid;
+}
+
+/* .patron {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+} */
+
+.section-nombre-firma {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+}
+
+.contenedor-imagen {
+    width: 156px;
+    height: 56px;
+}
+
+.contenedor-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.instrucciones {
+    margin-top: 18px;
+    line-height: normal;
+}
+
+.instrucciones p {
+    font-size: 10px;
+}
+
+.instrucciones h4 {
+    padding: 0.5% 0 0.5% 0;
+}
+
+.adv {
+    text-align: end;
+}
+
+.prefijos {
+    font-size: 5px;
+}

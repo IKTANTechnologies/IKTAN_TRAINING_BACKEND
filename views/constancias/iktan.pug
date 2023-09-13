@@ -1,0 +1,40 @@
+doctype html
+html
+  head
+      meta(charset='UTF-8')
+      meta(http-equiv='X-UA-Compatible' content='IE=edge')
+      meta(name='viewport' content='width=device-width, initial-scale=1.0')
+      include _style
+      //amechi "https://i.imgur.com/QvDL6yr.png"
+  body
+    .contenedor
+      .border.background
+        .contenedor-imagenes
+          div
+            img.tamano-logo(src=`${curso.iktan.logoIzquierdo.url}` alt='logo')
+          div
+            img.tamano-cuadro(src=`${curso.iktan.logoDerecho.url}` alt='cuadro')
+          div
+            h3.textdospuntos Extendido a:
+            h2.nombre  #{user.nombre} #{user.apellidoPaterno} #{user.apellidoMaterno}
+            h3.subtitulo Por haber completado satisfactoriamente el curso de:
+            h2.titulo #{curso.nombre}
+            h3.calificacion Con una calificacion de: #{calificacion}
+            h3.texto
+              | #{curso.descripcion}
+            .flexrow
+              .itemuno
+                img.firma1(src=`${curso.iktan.capacitadorUno.firmaElectronica.url}` alt='firma1')
+                p.nombrenegrita Ing. #{curso.iktan.capacitadorUno.nombre} #{curso.iktan.capacitadorUno.apellidoPaterno} #{curso.iktan.capacitadorUno.apellidoMaterno}
+                p.puemre #{curso.iktan.capacitadorUno.puestoCapacitador}
+                p.puemre #{curso.iktan.capacitadorUno.empresaCapacitador}
+              .itemdos
+                img.firma2(src=`${curso.iktan.capacitadorDos.firmaElectronica}` alt='firma1')
+                p.nombrenegrita Ing. #{curso.iktan.capacitadorDos.nombre} #{curso.iktan.capacitadorDos.apellidoPaterno} #{curso.iktan.capacitadorDos.apellidoMaterno}
+                p.puemre  #{curso.iktan.capacitadorDos.puestoCapacitador}
+                p.puemre #{curso.iktan.capacitadorDos.empresaCapacitador}
+              img.qr(src='https://iktan-training-production.s3.amazonaws.com/Templates/Imagenes/QR-Validador.png?fbclid=IwAR2b3O4_-EwuxVuM47IM5TbUp84jIPOz_zxI53B1ky6MVdw6KDR89hHiTGg' alt='QR')
+            div
+              p.folio Folio: #{user.folio} 
+              p.link WWW.IKTANSTRAINING.COM/REGISTROS 
+              div

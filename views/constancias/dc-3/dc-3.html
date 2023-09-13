@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>pruebasPDF</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- HEADER-->
+      <div class="fila-logo">
+        <div class="cont-logo">
+          <img class="logo sep1" src="https://iktan-training-production.s3.amazonaws.com/Templates/Imagenes/LOGO+IKTAN+STRATEGIES+Alta+Calidad.png" />
+        </div>
+        <div class="cont-logo">
+          <img class="logo sep2" src="https://iktan-training-production.s3.amazonaws.com/Templates/Imagenes/Logo+AMEXHI.png" />
+        </div>
+      </div>
+
+      <div class="container-title">
+        <h4 class="title-principal">
+          FORMATO DC-3<br />CONSTANCIA DE COMPETENCIAS O DE HABILIDADES<br />LABORALES
+        </h4>
+      </div>
+      <!-- SECCION DATOS DEL TRABAJADOR -->
+      <div class="container-trabajador">
+        <h3 class="seccion-titulo">DATOS DEL TRABAJADOR</h3>
+        <div class="nombre">
+          <p>Nombre (Anotar apellido paterno, apellido materno y nombre (s))</p>
+          <h3>{{user.nombre}}</h3>
+        </div>
+        <div class="rfc-ocupacion">
+          <div class="rfc">
+            <p>Clave Única de Registro de Población</p>
+            <div class="datos-rfc">
+              {{#each user.curp }}
+              <div>
+                <h3>{{this}}</h3>
+              </div>
+              {{/each}}
+            </div>
+          </div>
+          <div class="ocupacion">
+            <p>
+              Ocupación específica (Catálogo Nacional de Ocupaciones)
+              <sup class="prefijos">1/</sup>
+            </p>
+            <h3>{{user.ocupacionEspecifica}}</h3>
+          </div>
+        </div>
+        <div class="puesto">
+          <p>Puesto</p>
+          <h3>{{user.puesto}}</h3>
+        </div>
+      </div>
+      <!-- FIN SECCION DATOS DEL TRABAJADOR -->
+      <!-- SECCION DATOS DE LA EMPRESA -->
+      <div class="container-empresa">
+        <h3 class="seccion-titulo">DATOS DE LA EMPRESA</h3>
+        <div class="razon-social">
+          <p>
+            Nombre o razón social (En caso de persona física, anotar apellido
+            paterno, apellido materno y nombre(s))
+          </p>
+          <h3>{{user.razonSocial}}</h3>
+        </div>
+        <div class="shcp">
+          <p>Registro Federal de Contribuyentes con homoclave (SHCP)</p>
+        </div>
+        <div class="datos-shcp">
+          <div class="vacio"></div>
+          <div>
+            <h3>{{user.shcp.[0]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[1]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[2]}}</h3>
+          </div>
+          <div>
+            <h3>.</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[3]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[4]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[5]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[6]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[7]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[8]}}</h3>
+          </div>
+          <div>
+            <h3>.</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[9]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[10]}}</h3>
+          </div>
+          <div>
+            <h3>{{user.shcp.[11]}}</h3>
+          </div>
+          <div class="relleno"></div>
+        </div>
+      </div>
+      <!-- FIN SECCION DE LOS DATOS DE LA EMPRESA -->
+      <!-- SECCION DATOS DEL PROGRAMA  -->
+      <div class="container-capacitacion">
+        <h3 class="seccion-titulo">
+          DATOS DEL PROGRAMA DE CAPACITACIÓN, ADIESTRAMIENTOY PRODUCTIVIDAD
+        </h3>
+        <div class="nombre-curso">
+          <p>Nombre del curso</p>
+          <h3>{{curso.nombre}}</h3>
+        </div>
+        <div class="section3">
+          <div class="horas">
+            <p>Duración en horas</p>
+            <h3>{{curso.duracion}}</h3>
+          </div>
+          <div class="periodo">
+            <p>
+              Periodo de ejecución: <br />
+              De
+            </p>
+          </div>
+          <div class="fecha1">
+            <div class="titulo-anio"><p>Año</p></div>
+            <div class="titulo-mes"><p>Mes</p></div>
+            <div class="titulo-dia"><p>Dia</p></div>
+
+            {{#each curso.fechas.inicio }}
+            <div class="dato-f1"><h3>{{this}}</h3></div>
+            {{/each}}
+          </div>
+          <div class="separacion">
+            <p>a</p>
+          </div>
+          <div class="fecha1">
+            <div class="titulo-anio"><p>Año</p></div>
+            <div class="titulo-mes"><p>Mes</p></div>
+            <div class="titulo-dia"><p>Dia</p></div>
+            {{#each curso.fechas.final }}
+            <div class="dato-f1"><h3>{{this}}</h3></div>
+            {{/each}}
+          </div>
+        </div>
+        <div class="tematica-curso">
+          <p>Área temática del curso <sup class="prefijos">2/</sup></p>
+          <h3>{{curso.areaTematica}}</h3>
+        </div>
+        <div class="capacitador">
+          <p>
+            Nombre del agente capacitador o STPS <sup class="prefijos">3/</sup>
+          </p>
+          <h3>
+            {{capacitador.nombre}} (Registro número
+            <span>)</span>
+          </h3>
+        </div>
+        <!-- FIN DATOS DEL PROGRAMA DE CAPACITACIÓN-->
+        <!-- SECCION DE FIRMAS-->
+        <div class="firmas">
+          <div class="info">
+            <p>
+              Los datos se asientan en esta constancia bajo protesta de decir
+              verdad, apercibidos de la responsabilidad en que incurre todo
+              aquel que no se conduce con verdad
+            </p>
+          </div>
+          <div class="jefes">
+            <div class="instructor">
+              <p>Intructor o tutor</p>
+            </div>
+            <div class="patron">
+              <p>Patrón o representante legal<sup class="prefijos">4/</sup></p>
+            </div>
+            <div class="representante">
+              <p>
+                Representante de los trabajadores <sup class="prefijos">5/</sup>
+              </p>
+            </div>
+          </div>
+          <div class="firmas-imagen">
+            <div class="firma-instructor">
+              <div class="contenedor-imagen">
+                <img src={{capacitador.firmaElectronica}} alt="" />
+              </div>
+            </div>
+            <div class="firma-patron">
+              <div class="contenedor-imagen">
+                 <!-- <img src="" alt="" />-->
+              </div>
+            </div>
+            <div class="firma-representante">
+              <div class="contenedor-imagen">
+                 <!-- <img src="" alt="" />-->
+                </div>
+            </div>
+          </div>
+          <div class="section-datos-firma">
+            <div class="dato-instructor">
+              <h3>{{capacitador.nombre}}</h3>
+            </div>
+            <div class="dato-patron">
+              <h3>{{user.representanteLegal}}</h3>
+            </div>
+            <div class="dato-representante">
+              <h3>{{user.representanteTrabajadores}}</h3>
+            </div>
+          </div>
+          <div class="section-nombre-firma">
+            <div class="nombre-firma-instructor">
+              <p>Nombre y firma</p>
+            </div>
+            <div class="nombre-firma-patron">
+              <p>Nombre y firma</p>
+            </div>
+            <div class="nombre-firma-representante">
+              <p>Nombre y firma</p>
+            </div>
+          </div>
+        </div>
+        <!-- FIN SECCION DE FIRMAS-->
+        <!-- SECCIÓN INSTRUCCIONES-->
+        <div class="instrucciones">
+          <h3>INSTRUCCIONES</h3>
+          <p>- Llenar a máquina o con letra de molde</p>
+          <p>
+            - Debera entregarse al trabajador dentro de los veinte dias hábiles
+            siguientes al término del curso de capacitación aprobado.
+          </p>
+          <p>
+            <sup>1/</sup> Las áreas y subáreas ocupacionales del Catálogo
+            Nacional de Ocupaciones se encuentran disponibles en el reverso de
+            este formato y en la página<a
+              href="https://www.gob.mx/stps/"
+              target="_blank"
+              >www.stps.gob.mx</a
+            >
+          </p>
+          <p>
+            <sup>2/</sup> Las áreas temáticas de los cursos se encuentran
+            disponibles en el reverso de este formato en la página
+            <a href="https://www.gob.mx/stps/" target="_blank"
+              >www.stps.gob.mx</a
+            >
+          </p>
+          <p>
+            <sup>3/</sup> Cursos impartidos por el área competente de la
+            Secretaria del Trabajo y Previsión Social.
+          </p>
+          <p>
+            <sup>4/</sup>Para empresa con menos de 51 trabajadores. Para
+            empresas con mas de 50 trabajadores firmaría el representante del
+            patrón ante la Comisión mixta de capacitación, adiestramiento y
+            productividad.
+          </p>
+          <p><sup>5/</sup>Solo para empresas con más de 50 trabajadores.</p>
+          <p><sup>*</sup> Dato no obligatorio.</p>
+        </div>
+        <div class="adv">
+          <p>DC-3 <br />ANVERSO</p>
+        </div>
+        <!-- FIN SECCION INSTRUCCIONES-->
+      </div>
+    </div>
+  </body>
+</html>

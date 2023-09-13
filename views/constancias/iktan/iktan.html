@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Contancia</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="datos-constancia">
+        <div class="contenedor-img">
+          <img src="https://iktan-training-production.s3.amazonaws.com/Templates/Imagenes/Logo+AMEXHI.png" alt="mexGob" />
+        </div>
+        <div class="parrafos-contancia">
+          <div class="p40">
+            <p class="fuente1">Extendido a:</p>
+          </div>
+          <div class="p40">
+            <p class="fuente-titulo">{{user.nombre}}</p>
+          </div>
+          <div class="p40">
+            <p class="fuente1">
+              Por haber completado satisfactoriamente el curso de:
+            </p>
+          </div>
+          <div class="p80">
+            <p class="fuente-titulo">
+              {{curso.nombre}}
+            </p>
+          </div>
+          <div class="p40">
+            <p class="fuente1">Con una calificación de 10:00</p>
+          </div>
+        </div>
+      </div>
+      <div class="imagen-capacitacion">
+        <img src="https://iktan-training-production.s3.amazonaws.com/Templates/Imagenes/Cuadro+gris+1.png" alt="gris" />
+      </div>
+      <div class="parrafo-programa">
+        <p class="fuente1">
+          {{curso.descripcion}}
+        </p>
+      </div>
+
+      <div class="final">
+        <div class="fila-completa">
+          <div class="firmas uno">
+            <img src={{capacitador.firmaElectronica}} alt="firma1" />
+          </div>
+          <div class="firmas dos">
+            <img src={{capacitador2.firmaElectronica}} alt="firma2" />
+          </div>
+        </div>
+        <div class="fila-completa">
+          <div class="director1">
+            <p class="fuente1">
+              <b>Ing. {{capacitador.nombre}}</b><br />{{capacitador.puesto}}<br />{{capacitador.empresa}}<br />
+            </p>
+          </div>
+          <div class="dir-qr">
+            <div class="director1">
+              <p class="fuente1">
+                <b>Ing. {{capacitador2.nombre}}</b><br />{{capacitador2.puesto}}<br />{{capacitador2.empresa}}<br />
+              </p>
+            </div>
+            <div class="qr">
+              <img src="https://iktan-training-production.s3.amazonaws.com/Templates/Imagenes/QR-Validador.png" alt="qr" />
+            </div>
+          </div>
+        </div>
+        <div class="ultima-fila">
+          <p class="funte1 margen">Folio: {{user.folio}}</p>
+          <p class="funte1 margen">WWW.IKTANSTRATEGIES.COM</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
