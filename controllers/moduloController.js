@@ -55,8 +55,11 @@ const subirArchivos= catchAsync(async(req,res,next)=>{
         const fileName = `imagenCover-${req.user.id}-${Date.now()}.${extension[1]}`
         console.log(fileName)
         const key = `Cursos/${curso.nombre}/Modulos/${req.body.numero}/Imagenes/${fileName}`;
+                console.log("key")
         console.log(key)
         const respuesta =await new Aws(key,req.files.imagenCover[0].buffer).subirArchivo()  
+                        console.log("respuesta")
+                console.log(respuesta)
         req.body.imagenCover = {url:respuesta.Location, key};
     }
     console.log("HOLA 3")
