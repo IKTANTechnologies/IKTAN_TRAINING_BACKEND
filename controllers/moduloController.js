@@ -51,8 +51,11 @@ const subirArchivos= catchAsync(async(req,res,next)=>{
         console.log(req.files.imagenCover)
         //if(req.files.imagenCover.mimetype !="image/png")return next(new AppError("La imagen del modulo, no es una imagen",400));
         const extension = req.files.imagenCover[0].mimetype.split("/")
+        console.log(extension)
         const fileName = `imagenCover-${req.user.id}-${Date.now()}.${extension[1]}`
+        console.log(fileName)
         const key = `Cursos/${curso.nombre}/Modulos/${req.body.numero}/Imagenes/${fileName}`;
+        console.log(key)
         const respuesta =await new Aws(key,req.files.imagenCover[0].buffer).subirArchivo()  
         req.body.imagenCover = {url:respuesta.Location, key};
     }
