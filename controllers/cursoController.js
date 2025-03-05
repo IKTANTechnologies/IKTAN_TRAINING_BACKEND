@@ -59,6 +59,8 @@ const uploadCursoImages = upload.fields([
 
 //Procesamiento de imagenes
 const tamañoImagenesCurso = catchAsync(async(req,res,next)=>{
+            console.log("req")
+        console.log(req)
     const curse = await Curso.findOne({nombre:req.body.nombre})
     if(curse) return next(new AppError("El nombre del curso ya existe",401))
     console.log(req.files)
