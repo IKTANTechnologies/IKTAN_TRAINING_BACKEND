@@ -48,6 +48,7 @@ const subirArchivos= catchAsync(async(req,res,next)=>{
     console.log("HOLA 2")
     if(req.files.imagenCover){
         //validar la imagen
+        console.log(req.files.imagenCover)
         //if(req.files.imagenCover.mimetype !="image/png")return next(new AppError("La imagen del modulo, no es una imagen",400));
         const extension = req.files.imagenCover[0].mimetype.split("/")
         const fileName = `imagenCover-${req.user.id}-${Date.now()}.${extension[1]}`
