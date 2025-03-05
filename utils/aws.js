@@ -20,6 +20,11 @@ class Aws{
             Key: this.directorio}
     }
     async subirArchivo(){
+            console.log(AWS_BUCKET_REGION)
+                        console.log(AWS_ACCESS_KEY)
+            console.log(AWS_SECRET_KEY)
+            console.log(AWS_BUCKET_NAME)
+
         return await s3.upload(this.opciones()).promise();   
     }
     async listaArchivos(){
