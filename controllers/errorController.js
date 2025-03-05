@@ -61,6 +61,7 @@ const handleExpiredErrorJWT = err =>{
 }
 
 const erroresGlobales = (err,req,res,next)=>{
+    console.log(err)
     //En dado caso que no tenga el status por default sea 500
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
