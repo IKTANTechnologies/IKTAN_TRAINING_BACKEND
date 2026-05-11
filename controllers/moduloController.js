@@ -7,6 +7,14 @@ const Curso = require('../models/Curso');
 const Aws = require('../utils/aws');
 const Archivo = require('../utils/archivo')
 const sharp = require('sharp');
+
+// Extrae el ID de 11 caracteres de cualquier formato de URL de YouTube
+const extraerYoutubeId = (url) => {
+    if (!url || url.trim() === '') return '';
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : '';
+};
 //Es mejor manejar la imagen en la memoria
 const multerStorage = multer.memoryStorage();
 //Comprobar si el archivo subido es una imagen
@@ -33,7 +41,18 @@ const uploadModuloArchivos = upload.fields([
 ])
 //!FALTA QUE CUANDO SE AGREGUE UN MODULO EL CURSO SE ACTUALIZE E INCLUYA EL ID
 const subirArchivos= catchAsync(async(req,res,next)=>{
-    req.body.reunion ={nombre: req.body.reunionNombre, link: req.body.reunionLink}
+    const reunionLink = (req.body.reunionLink || '').trim();
+    const reunionNombre = (req.body.reunionNombre || '').trim();
+    const videoUrl = (req.body.videoUrl || '').trim();
+
+    if (reunionLink && videoUrl) {
+        return next(new AppError("Solo puedes agregar link de reunión o link de video, no ambos.", 400));
+    }
+
+    req.body.reunion = {};
+    if (reunionNombre) req.body.reunion.nombre = reunionNombre;
+    if (reunionLink) req.body.reunion.link = reunionLink;
+
     console.log(req.body)
     console.log("HOLA 1")
     const curso =await Curso.findById(req.body.curso)
@@ -102,6 +121,15 @@ const subirArchivos= catchAsync(async(req,res,next)=>{
            
             console.log(req.body)
         }));}
+    // Extraer y guardar solo el ID del video de YouTube (nunca la URL completa)
+    req.body.videoEmbedId = extraerYoutubeId(videoUrl);
+    if (videoUrl && !req.body.videoEmbedId) {
+        return next(new AppError("El link de video de YouTube no es válido.", 400));
+    }
+    if (reunionLink) {
+        req.body.videoEmbedId = '';
+    }
+    delete req.body.videoUrl;
     next()
     
 })
@@ -244,6 +272,19 @@ const imagenesModulo = catchAsync(async(req,res,next)=>{
 const updateModulo = catchAsync(async(req,res,next)=>{
     const t = ""
     console.log(req.body.numero)
+    const reunionLink = (req.body.reunionLink || '').trim();
+    const reunionNombre = (req.body.reunionNombre || '').trim();
+    const videoUrl = (req.body.videoUrl || '').trim();
+
+    if (reunionLink && videoUrl) {
+        return next(new AppError("Solo puedes agregar link de reunión o link de video, no ambos.", 400));
+    }
+
+    const nuevoVideoEmbedId = extraerYoutubeId(videoUrl);
+    if (videoUrl && !nuevoVideoEmbedId) {
+        return next(new AppError("El link de video de YouTube no es válido.", 400));
+    }
+
     req.body.modulo.materiales = undefined
     req.body.modulo.materiales = req.body.y
     req.body.modulo.nombre = req.body.nombre
@@ -251,9 +292,28 @@ const updateModulo = catchAsync(async(req,res,next)=>{
     req.body.modulo.fechaInicio = req.body.fechaInicio
     req.body.modulo.descripcionCard = req.body.descripcionCard
     req.body.modulo.activo = req.body.activo
-    req.body.modulo.reunion.nombre = req.body.reunionNombre
-    req.body.modulo.reunion.link = req.body.reunionLink
+    req.body.modulo.reunion = req.body.modulo.reunion || {}
+    if (reunionNombre) {
+        req.body.modulo.reunion.nombre = reunionNombre
+    } else {
+        req.body.modulo.reunion.nombre = undefined
+    }
+    if (reunionLink) {
+        req.body.modulo.reunion.link = reunionLink
+    } else {
+        req.body.modulo.reunion.link = undefined
+    }
     req.body.modulo.idCurso = req.body.idCurso
+    req.body.modulo.videoEmbedId = nuevoVideoEmbedId || req.body.modulo.videoEmbedId || '';
+
+    if (reunionLink) {
+        req.body.modulo.videoEmbedId = '';
+    }
+
+    if (nuevoVideoEmbedId) {
+        req.body.modulo.reunion.link = undefined;
+    }
+
     const modulo = req.body.modulo
     req.body = {}
     req.body = modulo

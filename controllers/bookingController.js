@@ -2,13 +2,74 @@ const {deleteOne, updateOne, createOne, getOne, getAll} = require("../controller
 const AppError = require("../utils/AppError");
 const Booking = require('../models/Booking');
 const Curso = require('../models/Curso');
+const User = require('../models/User');
 const catchAsync = require('../utils/catchAsync');
+const APIFeature = require('../utils/apiFeature');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const createBooking = createOne(Booking);
 const getBooking = getOne(Booking);
 const updateBooking = updateOne(Booking);
 const deleteBooking = deleteOne(Booking);
-const allBooking = getAll(Booking);
+
+const filtrarBookingPorRol = (req,res,next)=>{
+  const rolesAdmin = ['administrador', 'capacitador'];
+  if(!rolesAdmin.includes(req.user.role)){
+    req.query.user = req.user.id;
+  }
+  next();
+}
+
+const allBooking = catchAsync(async(req,res)=>{
+  const features = new APIFeature(Booking.find({}),req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  const doc = await features.query;
+
+  res.status(200).json({
+    status: "successful",
+    results: doc.length,
+    requestAt: req.requestTime,
+    data: {data: doc}
+  });
+});
+
+const asignarCursoUsuario = catchAsync(async(req,res,next)=>{
+  const { user, curso } = req.body;
+  if(!user || !curso){
+    return next(new AppError('Debes enviar user y curso',400));
+  }
+
+  const usuarioExiste = await User.findById(user);
+  if(!usuarioExiste){
+    return next(new AppError('El usuario no existe',404));
+  }
+
+  const cursoExiste = await Curso.findById(curso);
+  if(!cursoExiste){
+    return next(new AppError('El curso no existe',404));
+  }
+
+  const bookingExiste = await Booking.findOne({user,curso});
+  if(bookingExiste){
+    return next(new AppError('El curso ya está asignado al usuario',400));
+  }
+
+  const booking = await Booking.create({
+    user,
+    curso,
+    precio: 0,
+    cantidad: 1,
+    pagado: true,
+  });
+
+  res.status(201).json({
+    status: 'successful',
+    data: { data: booking }
+  });
+})
 
 const getCheckoutSession = catchAsync(async(req,res,next)=>{
     //
@@ -31,7 +92,7 @@ const getCheckoutSession = catchAsync(async(req,res,next)=>{
         line_items: [
           {
             price_data: {
-                currency: 'usd',
+                currency: 'mxn',
                 unit_amount: (iva*100),
                 product_data: {
                     name: `${curso.nombre} Curso`,
@@ -53,4 +114,13 @@ const getCheckoutSession = catchAsync(async(req,res,next)=>{
     next(new AppError("No puedes comprar el curso debido a que ya se encuentra vinculado a tu cuenta.",404))
 })
 
-module.exports = { getCheckoutSession,createBooking,getBooking,updateBooking,deleteBooking,allBooking }
+module.exports = {
+  getCheckoutSession,
+  createBooking,
+  getBooking,
+  updateBooking,
+  deleteBooking,
+  allBooking,
+  filtrarBookingPorRol,
+  asignarCursoUsuario,
+}

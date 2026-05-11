@@ -56,10 +56,13 @@ const moduloSchema= mongoose.Schema({
             }
         }
     ],
+    videoEmbedId:{
+        type: String,
+        default: ""
+    },
     reunion:{
         nombre:{
             type: String,
-            required:[true,"La reunion debe de tener un nombre"],
             minlength:[2,"El nombre de la reunion debe de tener como minimo 2 caracteres"],
             maxlength: [300,"El nombre de la reunion debe de tener como maximo 300 caracteres"],
             trim: true,

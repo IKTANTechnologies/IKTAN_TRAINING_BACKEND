@@ -88,6 +88,17 @@ const validarCalificacion = async(req,res,next)=>{
     }
 }
 
+const marcarCursoFinalizado = async(req,res,next)=>{
+    try{
+        if(req.curso && req.curso._id){
+            await Curso.findByIdAndUpdate(req.curso._id, {finalizado: true}, {new: true})
+        }
+        next();
+    }catch(err){
+        next(err);
+    }
+}
+
 const createRespuestaEF = createOne(RespuestaEF);
 const oneRespuestaEF = getOne(RespuestaEF);
 const allRespuestaEF = getAll(RespuestaEF);
@@ -95,7 +106,7 @@ const updateRespuestaEF = updateOne(RespuestaEF);
 const deleteRespuestaEF = deleteOne(RespuestaEF);
 
 module.exports = {createRespuestaEF, oneRespuestaEF, allRespuestaEF, updateRespuestaEF, 
-    deleteRespuestaEF, setCursoUserIds, validarCurso, asignarCalificacion, validarCalificacion};
+    deleteRespuestaEF, setCursoUserIds, validarCurso, asignarCalificacion, validarCalificacion, marcarCursoFinalizado};
 
 
 
