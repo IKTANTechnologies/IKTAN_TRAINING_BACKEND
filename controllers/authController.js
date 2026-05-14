@@ -116,11 +116,9 @@ const protect =catchAsync(async(req,res,next)=>{
     let token;
     //1)Traer el token y verificar si existe
     //startsWith significa si comienza con Bearer
-        console.log(req.cookies)
         if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
             token = req.headers.authorization.split(" ")[1];
         }else if(req.cookies.jwt){
-            console.log(token)
             token = req.cookies.jwt;
            // console.log(req.cookie)
             //console.log(token)
@@ -136,7 +134,6 @@ const protect =catchAsync(async(req,res,next)=>{
     if(user.actualizoContraseñaDespues(decoded.iat)){
         return next(new AppError("El usuario recientemente actualizo su contraseña. porfavor vuelva a iniciar sesion",401));
     }
-                console.log("pasa protect")
     //ACCESO A LA RUTA
     req.user = user;
     next();
@@ -145,13 +142,11 @@ const protect =catchAsync(async(req,res,next)=>{
 
 //Restringir acceso
 const restrictTo =(...roles)=>{
-                    console.log("entra restrictTo")
     return (req,res,next)=>{
         //roles ["admin", "lead-guide"]
         if(!roles.includes(req.user.role)){
             return next(new AppError("No tienes los permisos para realizar esta accion",403))
         }
-                            console.log("sale restrictTo")
         next();
     }
 }
