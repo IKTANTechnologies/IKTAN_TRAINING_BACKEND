@@ -4,9 +4,8 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 
 const catchAsync = require('../utils/catchAsync');
-const {enviarEmail, Email} = require('../utils/email');
+const { Email, sendVerificationEmail } = require('../utils/email');
 const crypto = require('crypto');
-const { stringify } = require('querystring');
 
 const signToken = id =>{
     return jwt.sign({id: id},process.env.JWT_SECRET,{
@@ -45,18 +44,33 @@ const createSendToken =(user,statusCode,req,res)=>{
     })
 }
 
-const comprobarToken = async (req, res,next) => {
-    const { token } = req.params
-    const user = await User.findOne({ token });
-    if(!user) return next(new AppError('Invalido Token',400));
+const comprobarToken = catchAsync(async (req, res,next) => {
+    const token = req.query.token || req.params.token;
+    if(!token) return next(new AppError('Token requerido',400));
+
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    let user = await User.findOne({
+        emailVerificationToken: hashedToken,
+        emailVerificationExpires: {$gt: Date.now()}
+    });
+
+    if(!user && req.params.token) {
+        user = await User.findOne({ token: req.params.token });
+    }
+
+    if(!user) return next(new AppError('Token invalido o caducado',400));
     
     user.confirmar = true;
+    user.emailVerified = true;
     user.token = '';
-    await User.findByIdAndUpdate(user.id,user);
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await user.save({validateBeforeSave:false});
+
     const url = `${process.env.FRONTEND_URL}/panel-user/actualizar-perfil`;
     await new Email(user,url).sendWelcome()
     res.status(200).json({status: 'successful'});
-};
+});
 
 const registro = catchAsync(async(req,res,next)=>{   
     //La mejores practicas es que nunca debemos de mandar tal cual el body como no lo mandan
@@ -69,16 +83,19 @@ const registro = catchAsync(async(req,res,next)=>{
         contraseña : req.body.contraseña,
         confirmarContraseña : req.body.confirmarContraseña,
         contraseñaActualizadaAt: req.body.contraseñaActualizadaAt,
+        emailVerified: false,
+        confirmar: false,
     });
     //La url del usuario en donde va a cambiar su foto de perfil
 
-    //const url = `${req.protocol}://${req.get('host')}/me`;
-    const url = `${process.env.FRONTEND_URL}/login/confirmar/${newUser.token}`;
-    //console.log(url)
-    await new Email(newUser,url).sendConfirmarCuenta();
-//(Carga util, la palabra secreta)
-//La palabra secreta no debe de ser corta, minimo debe de tener 30 caracteres y 2 especiales
-    createSendToken(newUser,201,req,res);
+    const verificationToken = newUser.createEmailVerificationToken();
+    await newUser.save({validateBeforeSave:false});
+    await sendVerificationEmail(newUser.correo, verificationToken);
+
+    res.status(201).json({
+        status: "successful",
+        message: "Usuario creado correctamente. Revisa tu correo para confirmar tu cuenta."
+    });
 
 });
 
@@ -95,7 +112,7 @@ const login =catchAsync(async(req,res,next)=>{
     if(!user || !await user.correctaContraseña(contraseña, user.contraseña)){
         return next(new AppError("Incorrecto email o password",401))
     }
-    if(user.confirmar == false){
+    if(user.emailVerified === false || user.confirmar === false){
         return next(new AppError("Tu cuenta no ha sido confirmada",401))
     }
     //Enviar un JWT al cliente

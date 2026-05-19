@@ -138,6 +138,12 @@ const userSchema = new mongoose.Schema({
         default: false,
     },
     token:String,
+    emailVerified: {
+        type: Boolean,
+        default: false,
+    },
+    emailVerificationToken: String,
+    emailVerificationExpires: Date,
     empresa:{
         type: mongoose.Schema.ObjectId,
         ref: "Empresas"
@@ -155,6 +161,8 @@ userSchema.pre('save',async function(next){
 })
 
 userSchema.pre('save',function(next){
+    if(!this.isNew || this.token) return next();
+
     this.token = Date.now().toString(32) + Math.random().toString(32).substring(2);
     next();
 })
@@ -194,7 +202,7 @@ userSchema.methods.actualizoContraseñaDespues = function(JWTTimesTamp){
 }
 
 userSchema.methods.createContraseñaResetToken = function(){
-    resetToken = crypto.randomBytes(32).toString("hex");
+    const resetToken = crypto.randomBytes(32).toString("hex");
     //console.log(resetToken)
 
     //Lo encriptamos por seguridad en la dataBase
@@ -202,6 +210,14 @@ userSchema.methods.createContraseñaResetToken = function(){
     //10 minutos expirara
     this.contraseñaResetExpires = Date.now() + (10*60*1000);
     return resetToken;
+}
+
+userSchema.methods.createEmailVerificationToken = function(){
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    this.emailVerificationToken = crypto.createHash('sha256').update(verificationToken).digest("hex");
+    this.emailVerificationExpires = Date.now() + (24*60*60*1000);
+    return verificationToken;
 }
 const User = mongoose.model("Usuarios",userSchema);
 module.exports = User;

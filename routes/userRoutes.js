@@ -13,6 +13,7 @@ const router = express.Router();
 //Autenticacion
 router.route('/registro').post(registro);
 router.route('/confirmar/:token').get(comprobarToken)
+router.route('/verify-email').get(comprobarToken)
 router.route('/login').post(login)
 router.route('/cerrarSesion').get(cerrarSesion)
 router.route('/olvidePassword').post(olvideContraseña);
